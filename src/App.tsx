@@ -1,3 +1,5 @@
+import { hardcodedJson } from "./hardcodedJson";
+
 function App() {
   return (
     <div className="w-full h-screen flex">
@@ -11,7 +13,7 @@ function App() {
       <div className="flex-1 p-4">
         <h2 className="text-xl font-semibold mb-4">JSON Viewer</h2>
         <pre className="bg-gray-900 text-gray-200 p-4 rounded-md h-[calc(100%-60px)] overflow-auto">
-          {}
+          {JSON.stringify(hardcodedJson, null, 2)}
         </pre>
       </div>
     </div>
