@@ -7,7 +7,11 @@ interface Props {
 const TreeView = ({ data }: Props) => {
   return (
     <div>
-        <TreeNode label="Root" value={data} />
+        {
+            Object.entries(data).map(([key, value]) => (
+                <TreeNode key={key} label={key} value={value} />
+            ))
+        }
     </div>
   )
 }
