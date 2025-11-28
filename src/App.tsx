@@ -1,3 +1,4 @@
+import TreeView from "./components/TreeView";
 import { hardcodedJson } from "./hardcodedJson";
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
       {/* Left Panel */}
       <div className="w-1/3 border-r border-gray-300 p-4">
         <h2 className="text-xl font-semibold mb-4">Tree Explorer</h2>
-        <p className="text-sm text-gray-500">Tree will appear here.</p>
+        <TreeView data={hardcodedJson} />
       </div>
 
       {/* Right Panel */}
