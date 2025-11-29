@@ -8,7 +8,7 @@ interface Props {
 
 const TreeView = ({ data, selectedPath, onSelectNode }: Props) => {
   return (
-    <div>
+    <div className="text-sm font-mono select-none">
         {
             Object.entries(data).map(([key, value]) => (
                 <TreeNode 
