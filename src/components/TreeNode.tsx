@@ -7,6 +7,7 @@ interface Props {
     currentPath: Path;
     selectedPath: Path;
     onSelectNode: (path: Path) => void;
+    onDeleteNode: (path: Path) => void;
 }
 
 const TreeNode = ({
@@ -14,7 +15,8 @@ const TreeNode = ({
     value,
     currentPath,
     selectedPath,
-    onSelectNode
+    onSelectNode,
+    onDeleteNode
 }: Props) => {
     const hasChildren = value && typeof value === 'object';
     const [ expanded, setExpanded ] = React.useState(false);
@@ -49,7 +51,7 @@ const TreeNode = ({
                 {currentPath.length > 1 && (
                     <button
                         onClick={() => {
-                            console.log(currentPath);
+                            onDeleteNode(currentPath);
                         }}
                         className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600"
                     >
@@ -69,6 +71,7 @@ const TreeNode = ({
                         currentPath={[ ...currentPath, key ]}
                         selectedPath={selectedPath}
                         onSelectNode={onSelectNode}
+                        onDeleteNode={onDeleteNode}
                     />
                 )}
         </div>
