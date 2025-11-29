@@ -1,9 +1,10 @@
 import React from "react";
 import TreeView from "./components/TreeView";
 import { hardcodedJson } from "./hardcodedJson";
+import type { Path } from "./types/common";
 
 function App() {
-  const [selectedPath, setSelectedPath] = React.useState<string[]>([]);
+  const [selectedPath, setSelectedPath] = React.useState<Path>([]);
 
   return (
     <div className="w-full h-screen flex">
