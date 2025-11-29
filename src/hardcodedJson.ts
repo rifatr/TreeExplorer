@@ -8,8 +8,12 @@ export const hardcodedJson = {
       name: {
         bn: "",
         en: ""
-      },
-      verify_otp_for_signup: false
+      }
+    },
+    verify_otp_for_signup: false,
+    platform: {
+        web: true,
+        handheld: false
     }
   }
 };
