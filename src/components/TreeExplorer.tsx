@@ -53,17 +53,22 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
                     </button>
                 </div>
 
-                <TreeView
-                    data={treeData}
-                    selectedPath={selectedPath}
-                    onSelectNode={setSelectedPath}
-                    onDeleteNode={setDeleteNodePath}
-                />
+                {Object.keys(treeData).length > 0 ? (
+                    <TreeView
+                        data={treeData}
+                        selectedPath={selectedPath}
+                        onSelectNode={setSelectedPath}
+                        onDeleteNode={setDeleteNodePath}
+                    />
+                ) : (
+                    <p className="text-gray-500 text-sm mt-2">
+                        No data loaded. Click &quot;Import&quot; to load JSON.
+                    </p>
+                )}
             </div>
 
             {/* Right Panel */}
             <div className="flex-1 p-4">
-                {/* Breadcrumb */}
                 <Breadcrumb path={selectedPath} />
 
                 {/* JSON Display */}
@@ -72,11 +77,12 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
                 </pre>
             </div>
 
+            {/* Modals */}
             <ConfirmModal
                 isOpen={deleteNodePath !== null}
                 onConfirm={handleDeleteNode}
                 onCancel={() => setDeleteNodePath(null)}
-                message={`Are you sure to delete the node "${deleteNodePath?.[ deleteNodePath.length - 1 ]}"? This action cannot be undone.`}
+                message={`Are you sure to delete the node "${deleteNodePath?.[deleteNodePath.length - 1 ]}"? This action cannot be undone.`}
             />
 
             <ImportJsonModal

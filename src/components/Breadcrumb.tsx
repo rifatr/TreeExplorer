@@ -7,7 +7,9 @@ interface Props {
 const Breadcrumb = ({path}: Props) => {
   return (
     <div>
-        <h2 className="text-xl font-semibold mb-4">{path.join(" > ")}</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">
+			{path.join(" > ")}
+		</h2>
     </div>
   )
 }

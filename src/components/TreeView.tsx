@@ -10,7 +10,7 @@ interface Props {
 
 const TreeView = ({ data, selectedPath, onSelectNode, onDeleteNode }: Props) => {
   return (
-    <div className="text-sm font-mono select-none">
+    <div className="text-sm font-mono">
         {Object.entries(data).map(([key, value]) => (
             <TreeNode 
                 key={key} 
