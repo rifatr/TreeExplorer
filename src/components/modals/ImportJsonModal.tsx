@@ -24,7 +24,7 @@ const ImportJsonModal = ({ isOpen, onImport, onClose }: Props) => {
             setTextValue("");
             setError("");
         } catch (err) {
-            setError("Invalid JSON. Please correct the errors and try again.");
+            setError("Invalid JSON. Please provide a correct JSON text.");
             console.error("JSON parse error:", err);
         }
     }
@@ -44,15 +44,16 @@ const ImportJsonModal = ({ isOpen, onImport, onClose }: Props) => {
 
                 <div className="flex justify-between gap-4">
                     <button
-                        onClick={onClose}
                         className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+                        onClick={onClose}
                     >
                         Close
                     </button>
 
                     <button
-                        onClick={handleImport}
                         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                        onClick={handleImport}
+                        
                     >
                         Import
                     </button>

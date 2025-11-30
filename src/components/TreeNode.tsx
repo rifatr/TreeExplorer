@@ -19,13 +19,14 @@ const TreeNode = ({
     onDeleteNode
 }: Props) => {
     const hasChildren = value && typeof value === 'object';
-    const [ expanded, setExpanded ] = React.useState(false);
     const isSelected = JSON.stringify(currentPath) === JSON.stringify(selectedPath);
+    const isRootNode = currentPath.length === 1;
+    const [expanded, setExpanded] = React.useState(isRootNode); // Root node expanded by default
 
     return (
         <div className="pl-4 relative">
             {/* Vertical guide line except the root component */}
-            {currentPath.length > 1 && (
+            {!isRootNode && (
                 <div className="absolute left-[4px] top-0 bottom-0 border-l border-gray-300 -mt-4"></div>
             )}
 
@@ -53,12 +54,10 @@ const TreeNode = ({
                 </div>
 
                 {/* Delete button except the root */}
-                {currentPath.length > 1 && (
+                {!isRootNode && (
                     <button
-                        onClick={() => {
-                            onDeleteNode(currentPath);
-                        }}
                         className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600"
+                        onClick={() => onDeleteNode(currentPath)}
                     >
                         −
                     </button>
