@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { Path } from "../types/common";
 import { deleteFinalKeyOfPath } from "../utils/deleteFinalKeyOfPath";
 import Breadcrumb from "./Breadcrumb";
@@ -15,6 +15,10 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
     const [selectedPath, setSelectedPath] = React.useState<Path>([Object.keys(treeData)[0]]);
     const [deleteNodePath, setDeleteNodePath] = React.useState<Path | null>(null);
     const [importModalOpen, setImportModalOpen] = React.useState(false);
+
+    useEffect(() => {
+        localStorage.setItem("treeData", JSON.stringify(treeData));
+    }, [ treeData ]);
     
     let handleDeleteNode = () => {
         if (deleteNodePath) {

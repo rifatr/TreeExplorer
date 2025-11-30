@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ImportJsonModal from "./components/modals/ImportJsonModal";
 import TreeExplorer from "./components/TreeExplorer";
 
 function App() {
 	const [ treeData, setTreeData ] = React.useState<any | null>(null);
 	const [ importModalOpen, setImportModalOpen ] = React.useState(false);
+
+	useEffect(() => {
+		const savedData = localStorage.getItem("treeData");
+		if(savedData) {
+			try {
+				const parsedData = JSON.parse(savedData);
+				setTreeData(parsedData)
+			} catch (err) {
+				console.log(`Saved data is inconsistant.\nError: ${err}\nSaved Data: ${savedData}`)
+			}
+		}
+	}, []);
 
 	let onImportJson = (data: any) => {
 		setTreeData(data);
