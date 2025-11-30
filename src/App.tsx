@@ -5,11 +5,13 @@ import type { Path } from "./types/common";
 import Breadcrumb from "./components/Breadcrumb";
 import ConfirmModal from "./components/modals/ConfirmModal";
 import { deleteFinalKeyOfPath } from "./utils/deleteFinalKeyOfPath";
+import ImportJsonModal from "./components/modals/ImportJsonModal";
 
 function App() {
   const [treeData, setTreeData] = React.useState(hardcodedJson);
   const [selectedPath, setSelectedPath] = React.useState<Path>([]);
   const [deleteNodePath, setDeleteNodePath] = React.useState<Path | null>(null);
+  const [importModalOpen, setImportModalOpen] = React.useState(false);
 
   let handleDeleteNode = () => {
     if (deleteNodePath) {
@@ -25,11 +27,27 @@ function App() {
     }
   }
 
+  let onImportJson = (json: any) => {
+    setTreeData(json);
+    setImportModalOpen(false);
+    setSelectedPath([]);
+  }
+
   return (
     <div className="w-full h-screen flex">
       {/* Left Panel */}
       <div className="w-1/3 border-r border-gray-300 p-4">
         <h2 className="text-xl font-semibold mb-4">Tree Explorer</h2>
+
+        {/* Import JSON Button */}
+        <button
+          className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          onClick={() => setImportModalOpen(true)}
+        >
+          Import JSON
+        </button>
+
+        {/* Tree View */}
         <TreeView 
           data={treeData}
           selectedPath={selectedPath}
@@ -55,6 +73,13 @@ function App() {
         onConfirm={handleDeleteNode}
         onCancel={() => setDeleteNodePath(null)}
         message={`Are you sure to delete the node "${deleteNodePath?.[deleteNodePath.length - 1]}"? This action cannot be undone.`}
+      />
+
+      {/* Import JSON Modal */}
+      <ImportJsonModal
+        isOpen={importModalOpen}
+        onImport={onImportJson}
+        onCancel={() => setImportModalOpen(false)}
       />
     </div>
 

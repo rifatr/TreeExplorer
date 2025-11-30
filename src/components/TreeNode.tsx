@@ -26,14 +26,14 @@ const TreeNode = ({
         <div className="pl-4 relative">
             {/* Vertical guide line except the root component */}
             {currentPath.length > 1 && (
-                <div className="absolute left-[4px] top-0 bottom-0 border-l border-gray-300"></div>
+                <div className="absolute left-[4px] top-0 bottom-0 border-l border-gray-300 -mt-4"></div>
             )}
 
             {/* Node row */}
             <div className="flex justify-between">
                 <div
                     className={`flex items-center gap-1 cursor-pointer mb-4
-                        ${isSelected ? "font-semibold text-blue-600" : ""}`}
+                                ${isSelected ? "font-semibold text-blue-600" : ""}`}
                     onClick={() => {
                         setExpanded(!expanded);
                         onSelectNode(currentPath);
