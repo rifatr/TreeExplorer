@@ -3,10 +3,10 @@ import React from "react";
 interface Props {
     isOpen: boolean;
     onImport: (json: any) => void;
-    onCancel: () => void;
+    onClose: () => void;
 }
 
-const ImportJsonModal = ({ isOpen, onImport, onCancel }: Props) => {
+const ImportJsonModal = ({ isOpen, onImport, onClose }: Props) => {
     if (!isOpen) return null;
 
     let [textValue, setTextValue] = React.useState("");
@@ -44,10 +44,10 @@ const ImportJsonModal = ({ isOpen, onImport, onCancel }: Props) => {
 
                 <div className="flex justify-between gap-4">
                     <button
-                        onClick={onCancel}
+                        onClick={onClose}
                         className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
                     >
-                        Cancel
+                        Close
                     </button>
 
                     <button

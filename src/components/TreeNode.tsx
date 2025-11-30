@@ -44,7 +44,12 @@ const TreeNode = ({
                     ) : (
                         <span className="inline-block"></span>
                     )}
-                    <span>{label}</span>
+                    <span
+                        className="text-sm max-w-[320px] overflow-hidden text-ellipsis whitespace-nowrap inline-block align-middle"
+                        title={label}  // shows full name on hover
+                    >
+                        {label}
+                    </span>
                 </div>
 
                 {/* Delete button except the root */}
