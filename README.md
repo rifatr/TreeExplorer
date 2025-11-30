@@ -1,73 +1,67 @@
-# React + TypeScript + Vite
+# Tree Explorer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small React + TypeScript + Vite app that visualizes nested JSON as an expandable/collapsible tree. The UI uses Tailwind CSS and plain React components.
 
-Currently, two official plugins are available:
+Live demo: https://your-deployment-url.example.com  <!-- Replace with your Netlify/Vercel URL -->
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What this repo contains
+- Source code for the Tree Explorer app (React + TypeScript + Vite)
+- A lightweight UI implemented with Tailwind CSS
+- A Dockerfile for containerized production serving
 
-## React Compiler
+## Why these choices
+- Framework: React + TypeScript + Vite — fast dev server, small build, and fits component-driven UIs.
+- Styling: Tailwind CSS — utility-first, no heavy UI libraries, so the look is custom and easy to tweak.
+- No third-party UI libraries — UI behavior and markup are implemented by the app to match the provided design.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Quick start (development)
+1. Install dependencies
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Start dev server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+3. Open the URL printed by Vite (typically http://localhost:5173)
+
+## Docker (build + run)
+
+1. Build the image:
+
+```bash
+docker build -t treeexplorer .
+```
+
+2. Run the container (example mapping port 80 in container to 8080 on host):
+
+```bash
+docker run -p 8080:80 --rm treeexplorer
+```
+
+3. Open http://localhost:8080
+
+## Features implemented
+- Expandable/collapsible tree view
+- Node selection and breadcrumb navigation
+- Import JSON modal (paste JSON) and delete-node confirmation flow
+- Tree persisted in localStorage
+
+## Bonus features
+- No extra bonus features implemented beyond the core requirement. The app prioritizes minimal dependencies and readable code.
+
+## Trade-offs & missing features
+- Performance: The tree is rendered recursively and may be slower for very large datasets; memoization and virtual scrolling would help for huge trees.
+- Editing: Only import and delete are provided — create/rename/move actions are not implemented.
+- Validation: JSON import has basic validation only; richer schema validation and better error UI could be added.
+
+## How to deploy
+
+Deploy to Vercel or Netlify by connecting the repo and using the Vite build command.
+
+- Vercel: Build command `npm run build`, output directory `dist`.
+- Netlify: Build command `npm run build`, publish `dist`.
