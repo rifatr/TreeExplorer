@@ -12,13 +12,20 @@ interface Props {
 
 const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
     const [treeData, setTreeData] = React.useState(initialTreeData);
-    const [selectedPath, setSelectedPath] = React.useState<Path>([Object.keys(treeData)[0]]);
+    const [selectedPath, setSelectedPath] = React.useState<Path>([]);
     const [deleteNodePath, setDeleteNodePath] = React.useState<Path | null>(null);
     const [importModalOpen, setImportModalOpen] = React.useState(false);
 
     useEffect(() => {
         localStorage.setItem("treeData", JSON.stringify(treeData));
+        initializeSelectedPath();
     }, [ treeData ]);
+
+    let initializeSelectedPath = () => {
+        const treeDataKeys = Object.keys(treeData);
+
+        setSelectedPath(treeDataKeys.length > 0 ? [treeDataKeys[0]] : [])
+    }
     
     let handleDeleteNode = () => {
         if (deleteNodePath) {
@@ -26,7 +33,7 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
     
             setTreeData(updatedData);
             if (JSON.stringify(deleteNodePath) === JSON.stringify(selectedPath)) {
-                setSelectedPath([]);
+                initializeSelectedPath();
             }
             setDeleteNodePath(null);
         }
@@ -35,7 +42,7 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
     let onImportJson = (json: any) => {
         setTreeData(json);
         setImportModalOpen(false);
-        setSelectedPath([]);
+        initializeSelectedPath;
     }
 
     return (
