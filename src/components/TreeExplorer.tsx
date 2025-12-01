@@ -10,10 +10,12 @@ import { renameFinalKeyOfPath } from "../utils/renameFinalKeyOfPath";
 
 interface Props {
     treeData: any;
+    oldTreeData?: any;
 }
 
-const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
+const TreeExplorer = ({ treeData: initialTreeData, oldTreeData: initialOldTreeData }: Props) => {
     const [ treeData, setTreeData ] = React.useState(initialTreeData);
+    const [ oldTreeData, setOldTreeData ] = React.useState<any | null>(initialOldTreeData);
     const [ selectedPath, setSelectedPath ] = React.useState<Path>([]);
 
     const [ importModalOpen, setImportModalOpen ] = React.useState(false);
@@ -23,8 +25,12 @@ const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
 
     useEffect(() => {
         localStorage.setItem("treeData", JSON.stringify(treeData));
+        localStorage.setItem("oldTreeData", JSON.stringify(oldTreeData));
         initializeSelectedPath();
     }, [ treeData ]);
+    useEffect(() => {
+        localStorage.setItem("oldTreeData", JSON.stringify(oldTreeData));
+    }, [ oldTreeData ]);
 
     let initializeSelectedPath = () => {
         const treeDataKeys = Object.keys(treeData);
@@ -33,14 +39,16 @@ const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
 
     let onImportJson = (json: any) => {
         setTreeData(json);
+        setOldTreeData(null);
         setImportModalOpen(false);
-        initializeSelectedPath;
+        initializeSelectedPath();
     }
 
     let handleDeleteNode = () => {
         if (deleteNodePath) {
             const updatedData = deleteFinalKeyOfPath(treeData, deleteNodePath);
 
+            setOldTreeData(treeData);
             setTreeData(updatedData);
             if (JSON.stringify(deleteNodePath) === JSON.stringify(selectedPath)) {
                 initializeSelectedPath();
@@ -52,8 +60,17 @@ const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
     let handleRenameNode = (name: string) => {
         if (renameNodePath) {
             const updatedData = renameFinalKeyOfPath(treeData, renameNodePath, name);
+            setOldTreeData(treeData);
             setTreeData(updatedData);
             setRenameNodePath(null);
+        }
+    }
+
+    let undo = () => {
+        if (oldTreeData) {
+            setTreeData(oldTreeData);
+            setOldTreeData(null);
+            initializeSelectedPath();
         }
     }
 
@@ -64,12 +81,23 @@ const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
                 <div className="justify-between flex">
                     <h2 className="text-xl font-semibold mb-4">Tree Explorer</h2>
 
-                    <button
-                        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                        onClick={() => setImportModalOpen(true)}
-                    >
-                        Import
-                    </button>
+                    <div className="flex gap-2">
+                        {oldTreeData && (
+                            <button
+                            className="mb-4 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600"
+                            onClick={() => undo()}
+                            >
+                                Undo
+                            </button>
+                        )}
+
+                        <button
+                            className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            onClick={() => setImportModalOpen(true)}
+                        >
+                            Import
+                        </button>
+                    </div>
                 </div>
 
                 {Object.keys(treeData).length > 0 ? (

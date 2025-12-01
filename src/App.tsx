@@ -4,16 +4,27 @@ import TreeExplorer from "./components/TreeExplorer";
 
 function App() {
 	const [ treeData, setTreeData ] = React.useState<any | null>(null);
+	const [ oldTreeData, setOldTreeData ] = React.useState<any | null>(null);
 	const [ importModalOpen, setImportModalOpen ] = React.useState(false);
 
 	useEffect(() => {
 		const savedData = localStorage.getItem("treeData");
+		const oldSavedData = localStorage.getItem("oldTreeData");
+
 		if(savedData) {
 			try {
 				const parsedData = JSON.parse(savedData);
 				setTreeData(parsedData)
 			} catch (err) {
 				console.log(`Saved data is inconsistant.\nError: ${err}\nSaved Data: ${savedData}`)
+			}
+		}
+		if(oldSavedData) {
+			try {
+				const parsedOldData = JSON.parse(oldSavedData);
+				setOldTreeData(parsedOldData)
+			} catch (err) {
+				console.log(`Old saved data is inconsistant.\nError: ${err}\nSaved Data: ${oldSavedData}`)
 			}
 		}
 	}, []);
@@ -33,7 +44,10 @@ function App() {
 					Import JSON to Start
 				</button>
 			) : (
-				<TreeExplorer treeData={treeData} />
+				<TreeExplorer 
+					treeData={treeData}
+					oldTreeData={oldTreeData}
+				/>
 			)}
 
 			<ImportJsonModal

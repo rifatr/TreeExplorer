@@ -47,9 +47,9 @@ docker run -p 8080:80 --rm treeexplorer
 
 ## Bonus features
 - Tree nodes can be renamed
-- Root node will be selected automatically -
-  - After importing a JSON
-  - If selected node is deleted
+- Undo last rename or delete action
+- Formatted JSON viewer for better UI
+- Highlight Root node automatically
 
 ## Trade-offs & missing features
 - Performance: The tree is rendered recursively and may be slower for very large datasets; memoization and virtual scrolling would help for huge trees.
