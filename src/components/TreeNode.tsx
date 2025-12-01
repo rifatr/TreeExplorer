@@ -50,7 +50,7 @@ const TreeNode = ({
                         <span className="inline-block"></span>
                     )}
                     <span
-                        className="text-sm max-w-[320px] overflow-hidden text-ellipsis whitespace-nowrap inline-block align-middle"
+                        className="mr-2 text-sm max-w-[320px] overflow-hidden text-ellipsis whitespace-nowrap inline-block align-middle"
                         title={label}
                     >
                         {label}
