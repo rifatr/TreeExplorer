@@ -2,7 +2,7 @@
 
 A small React + TypeScript + Vite app that visualizes nested JSON as an expandable/collapsible tree. The UI uses Tailwind CSS and plain React components.
 
-Live demo: https://your-deployment-url.example.com  <!-- Replace with your Netlify/Vercel URL -->
+Live demo: [https://tree-explorer-one.vercel.app/](https://tree-explorer-one.vercel.app/)
 
 ## What this repo contains
 - Source code for the Tree Explorer app (React + TypeScript + Vite)
@@ -45,23 +45,12 @@ docker run -p 8080:80 --rm treeexplorer
 
 3. Open http://localhost:8080
 
-## Features implemented
-- Expandable/collapsible tree view
-- Node selection and breadcrumb navigation
-- Import JSON modal (paste JSON) and delete-node confirmation flow
-- Tree persisted in localStorage
-
 ## Bonus features
-- No extra bonus features implemented beyond the core requirement. The app prioritizes minimal dependencies and readable code.
+- Tree nodes can be renamed
+- Root node will be selected automatically -
+  - After importing a JSON
+  - If selected node is deleted
 
 ## Trade-offs & missing features
 - Performance: The tree is rendered recursively and may be slower for very large datasets; memoization and virtual scrolling would help for huge trees.
-- Editing: Only import and delete are provided — create/rename/move actions are not implemented.
-- Validation: JSON import has basic validation only; richer schema validation and better error UI could be added.
-
-## How to deploy
-
-Deploy to Vercel or Netlify by connecting the repo and using the Vite build command.
-
-- Vercel: Build command `npm run build`, output directory `dist`.
-- Netlify: Build command `npm run build`, publish `dist`.
+- Validation: Better error UI could be added while JSON validation.

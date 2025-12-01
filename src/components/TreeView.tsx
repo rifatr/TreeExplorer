@@ -6,9 +6,10 @@ interface Props {
     selectedPath: Path;
     onSelectNode: (path: Path) => void;
     onDeleteNode: (path: Path) => void;
+    onRenameNode: (path: Path) => void;
 }
 
-const TreeView = ({ data, selectedPath, onSelectNode, onDeleteNode }: Props) => {
+const TreeView = ({ data, selectedPath, onSelectNode, onDeleteNode, onRenameNode }: Props) => {
   return (
     <div className="text-sm font-mono">
         {Object.entries(data).map(([key, value]) => (
@@ -20,6 +21,7 @@ const TreeView = ({ data, selectedPath, onSelectNode, onDeleteNode }: Props) => 
                 selectedPath={selectedPath}
                 onSelectNode={onSelectNode} 
                 onDeleteNode={onDeleteNode}
+                onRenameNode={onRenameNode}
             />
         ))}
     </div>

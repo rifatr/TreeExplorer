@@ -5,16 +5,21 @@ import Breadcrumb from "./Breadcrumb";
 import ConfirmModal from "./modals/ConfirmModal";
 import ImportJsonModal from "./modals/ImportJsonModal";
 import TreeView from "./TreeView";
+import RenameModal from "./modals/RenameModal";
+import { renameFinalKeyOfPath } from "../utils/renameFinalKeyOfPath";
 
 interface Props {
     treeData: any;
 }
 
-const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
-    const [treeData, setTreeData] = React.useState(initialTreeData);
-    const [selectedPath, setSelectedPath] = React.useState<Path>([]);
-    const [deleteNodePath, setDeleteNodePath] = React.useState<Path | null>(null);
-    const [importModalOpen, setImportModalOpen] = React.useState(false);
+const TreeExplorer = ({ treeData: initialTreeData }: Props) => {
+    const [ treeData, setTreeData ] = React.useState(initialTreeData);
+    const [ selectedPath, setSelectedPath ] = React.useState<Path>([]);
+
+    const [ importModalOpen, setImportModalOpen ] = React.useState(false);
+
+    const [ deleteNodePath, setDeleteNodePath ] = React.useState<Path | null>(null);
+    const [ renameNodePath, setRenameNodePath ] = React.useState<Path | null>(null);
 
     useEffect(() => {
         localStorage.setItem("treeData", JSON.stringify(treeData));
@@ -23,14 +28,19 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
 
     let initializeSelectedPath = () => {
         const treeDataKeys = Object.keys(treeData);
-
-        setSelectedPath(treeDataKeys.length > 0 ? [treeDataKeys[0]] : [])
+        setSelectedPath(treeDataKeys.length > 0 ? [ treeDataKeys[ 0 ] ] : [])
     }
-    
+
+    let onImportJson = (json: any) => {
+        setTreeData(json);
+        setImportModalOpen(false);
+        initializeSelectedPath;
+    }
+
     let handleDeleteNode = () => {
         if (deleteNodePath) {
             const updatedData = deleteFinalKeyOfPath(treeData, deleteNodePath);
-    
+
             setTreeData(updatedData);
             if (JSON.stringify(deleteNodePath) === JSON.stringify(selectedPath)) {
                 initializeSelectedPath();
@@ -38,11 +48,13 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
             setDeleteNodePath(null);
         }
     }
-    
-    let onImportJson = (json: any) => {
-        setTreeData(json);
-        setImportModalOpen(false);
-        initializeSelectedPath;
+
+    let handleRenameNode = (name: string) => {
+        if (renameNodePath) {
+            const updatedData = renameFinalKeyOfPath(treeData, renameNodePath, name);
+            setTreeData(updatedData);
+            setRenameNodePath(null);
+        }
     }
 
     return (
@@ -66,6 +78,7 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
                         selectedPath={selectedPath}
                         onSelectNode={setSelectedPath}
                         onDeleteNode={setDeleteNodePath}
+                        onRenameNode={setRenameNodePath}
                     />
                 ) : (
                     <p className="text-gray-500 text-sm mt-2">
@@ -85,17 +98,24 @@ const TreeExplorer = ({ treeData: initialTreeData } : Props) => {
             </div>
 
             {/* Modals */}
-            <ConfirmModal
-                isOpen={deleteNodePath !== null}
-                onConfirm={handleDeleteNode}
-                onCancel={() => setDeleteNodePath(null)}
-                message={`Are you sure to delete the node "${deleteNodePath?.[deleteNodePath.length - 1 ]}"? This action cannot be undone.`}
-            />
-
             <ImportJsonModal
                 isOpen={importModalOpen}
                 onImport={onImportJson}
                 onClose={() => setImportModalOpen(false)}
+            />
+
+            <ConfirmModal
+                isOpen={deleteNodePath !== null}
+                onConfirm={handleDeleteNode}
+                onCancel={() => setDeleteNodePath(null)}
+                message={`Are you sure to delete the node "${deleteNodePath?.[ deleteNodePath.length - 1 ]}"? This action cannot be undone.`}
+            />
+
+            <RenameModal
+                isOpen={renameNodePath !== null}
+                onRename={handleRenameNode}
+                previousName={renameNodePath ? renameNodePath[ renameNodePath.length - 1 ] : undefined}
+                onClose={() => setRenameNodePath(null)}
             />
         </div>
     )

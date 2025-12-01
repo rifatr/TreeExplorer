@@ -1,5 +1,6 @@
 import React from "react";
 import type { Path } from "../types/common";
+import renameIcon from "../assets/rename.svg";
 
 interface Props {
     label: string;
@@ -8,6 +9,7 @@ interface Props {
     selectedPath: Path;
     onSelectNode: (path: Path) => void;
     onDeleteNode: (path: Path) => void;
+    onRenameNode: (path: Path) => void;
 }
 
 const TreeNode = ({
@@ -16,12 +18,14 @@ const TreeNode = ({
     currentPath,
     selectedPath,
     onSelectNode,
-    onDeleteNode
+    onDeleteNode,
+    onRenameNode
 }: Props) => {
     const hasChildren = value && typeof value === 'object';
     const isSelected = JSON.stringify(currentPath) === JSON.stringify(selectedPath);
     const isRootNode = currentPath.length === 1;
-    const [expanded, setExpanded] = React.useState(isRootNode); // Root node expanded by default
+
+    const [ expanded, setExpanded ] = React.useState(isRootNode); // Root node expanded by default
 
     return (
         <div className="pl-4 relative">
@@ -47,21 +51,28 @@ const TreeNode = ({
                     )}
                     <span
                         className="text-sm max-w-[320px] overflow-hidden text-ellipsis whitespace-nowrap inline-block align-middle"
-                        title={label}  // shows full name on hover
+                        title={label}
                     >
                         {label}
                     </span>
                 </div>
 
-                {/* Delete button except the root */}
-                {!isRootNode && (
+                {/* Buttons */}
+                <div className="flex gap-2">
+                    {!isRootNode && (
+                        <button
+                            className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600"
+                            onClick={() => onDeleteNode(currentPath)}
+                        >−</button>
+                    )}
+
                     <button
-                        className="w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center hover:bg-red-600"
-                        onClick={() => onDeleteNode(currentPath)}
+                        className="w-5 h-5 border rounded-full text-gray-500 hover:bg-gray-200 hover:text-blue-600"
+                        onClick={() => onRenameNode(currentPath)}
                     >
-                        −
+                        <img src={renameIcon} alt="Rename" className="w-5 h-5 text-current" />
                     </button>
-                )}
+                </div>
             </div>
 
             {/* Children */}
@@ -76,6 +87,7 @@ const TreeNode = ({
                         selectedPath={selectedPath}
                         onSelectNode={onSelectNode}
                         onDeleteNode={onDeleteNode}
+                        onRenameNode={onRenameNode}
                     />
                 )}
         </div>
